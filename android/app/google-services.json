@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "451297516709",
+    "firebase_url": "https://farmaniac-2805c.firebaseio.com",
+    "project_id": "farmaniac-2805c",
+    "storage_bucket": "farmaniac-2805c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451297516709:android:3914eeff5d01d7ebae814c",
+        "android_client_info": {
+          "package_name": "com.example.farmaniac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451297516709-04118npsgjiik1b2gtuo31t36fdgd6bm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAffGCAycuIYP-rPoXs4OzZ3jfO9Ieoiow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451297516709-04118npsgjiik1b2gtuo31t36fdgd6bm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
