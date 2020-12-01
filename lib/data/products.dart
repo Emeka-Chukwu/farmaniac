@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:farmaniac/components/progressBar.dart';
 import 'package:farmaniac/configs/change_screen.dart';
+import 'package:farmaniac/configs/color.dart';
 import 'package:farmaniac/models/farmer.dart';
 // import 'package:farmaniac/screens/available_product.dart';
 // import 'package:farmaniac/screens/bottom_navigation.dart';
-import 'package:farmaniac/screens/order.dart';
 import 'package:farmaniac/screens/upload_update.dart';
 import 'package:farmaniac/services/products.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,6 +59,8 @@ class ProductsDataProvider with ChangeNotifier {
 
   void getAllProducts() async {
     productList = await products.getProducts();
+    productList
+        .sort((a, b) => b.dateTime.toString().compareTo(a.dateTime.toString()));
     notifyListeners();
   }
 
@@ -88,13 +91,21 @@ class ProductsDataProvider with ChangeNotifier {
       description: description,
       pickup: pickup,
     );
-
+    progressBar(context,
+        title: "Adding Product", description: "loading", color: green);
     try {
       await products.submitProductData(file, product);
       changeScreen(context, ProductAdded());
       function();
     } catch (e) {
       print(e.toString());
+      Navigator.pop(context);
+      dialogWarning(
+        context,
+        title: "Message",
+        description: "${e.toString()}",
+        color: green,
+      );
     }
     file = null;
     notifyListeners();

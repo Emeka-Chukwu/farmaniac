@@ -1,5 +1,7 @@
 import 'package:farmaniac/configs/configs.dart';
+import 'package:farmaniac/data/auths.dart';
 import 'package:farmaniac/data/products.dart';
+import 'package:farmaniac/models/farmer.dart';
 import 'package:farmaniac/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +10,8 @@ class BottomNavigationSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     // print()
     final product = Provider.of<ProductsDataProvider>(context);
-
+    final auths = Provider.of<Authentication>(context);
+    Farmer farmer = Farmer();
     return ChangeNotifierProvider<ProductsDataProvider>(
       create: (context) => ProductsDataProvider(),
       child: Builder(
@@ -23,35 +26,38 @@ class BottomNavigationSheet extends StatelessWidget {
                     function: () => product.getSelectedIndex(1),
                   ),
                   ProductListScreen(),
-                  CreatePage(
-                    function: () => product.getSelectedIndex(1),
-                  ),
+                  auths.farmer.isFarmer
+                      ? CreatePage(
+                          function: () => product.getSelectedIndex(1),
+                        )
+                      : Center(child: CircularProgressIndicator()),
                   OrderProduce()
                 ],
               ),
             ),
             bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: white,
+              // backgroundColor: white,
               showUnselectedLabels: true,
-              selectedItemColor: Colors.red,
+              selectedItemColor: Color(0xff6F6F6F),
+              unselectedItemColor: Color(0xff6F6F6F),
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  backgroundColor: green,
+                  backgroundColor: Color(0xffF8F8F8),
                   icon: Icon(Icons.home),
                   label: "Home",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.ac_unit),
-                  backgroundColor: green,
+                  backgroundColor: Color(0xffF8F8F8),
                   label: "Products",
                 ),
                 BottomNavigationBarItem(
-                  backgroundColor: green,
+                  backgroundColor: Color(0xffF8F8F8),
                   icon: Icon(Icons.add),
                   label: "Add",
                 ),
                 BottomNavigationBarItem(
-                  backgroundColor: green,
+                  backgroundColor: Color(0xffF8F8F8),
                   icon: Icon(Icons.shopping_cart),
                   label: "Home",
                 ),

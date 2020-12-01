@@ -20,37 +20,34 @@ class AvailableProducts extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    children: [
-                      YMargin(Responsive.screenHeight(3, context)),
-                      // Text(
-                      //   "uu",
-                      //   style: TextStyle(
-                      //     color: darkBlue,
-                      //     fontSize: Responsive.textSize(3, context),
-                      //     height: Responsive.textSize(0.3, context),
-                      //     fontWeight: FontWeight.w200,
-                      //   ),
-                      // ),
+            body: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  children: [
+                    // Text(
+                    //   "uu",
+                    //   style: TextStyle(
+                    //     color: darkBlue,
+                    //     fontSize: Responsive.textSize(3, context),
+                    //     height: Responsive.textSize(0.3, context),
+                    //     fontWeight: FontWeight.w200,
+                    //   ),
+                    // ),
 
-                      AvailableProduceComponents(
-                        profile: profileDetails.farmer,
-                        color: green,
-                        onTap: () => profileDetails.logout(context),
-                      ),
-                      // AvailableProduceComponents(
-                      //   color: green,
-                      //   title: "Farm Produce 1",
-                      //   description:
-                      //       "The above is a dummy text written by Eben",
-                      //   price: "2\n7",
-                      //   onTap: function,
-                      // ),
-                    ],
-                  ),
+                    AvailableProduceComponents(
+                      profile: profileDetails.farmer,
+                      color: green,
+                      onTap: () => profileDetails.logout(context),
+                    ),
+                    // AvailableProduceComponents(
+                    //   color: green,
+                    //   title: "Farm Produce 1",
+                    //   description:
+                    //       "The above is a dummy text written by Eben",
+                    //   price: "2\n7",
+                    //   onTap: function,
+                    // ),
+                  ],
                 ),
               ),
             ),

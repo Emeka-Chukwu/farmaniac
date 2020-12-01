@@ -1,6 +1,7 @@
 import 'package:farmaniac/components/product_list_firebase.dart';
 import 'package:farmaniac/components/products_list.dart';
 import 'package:farmaniac/configs/configs.dart';
+import 'package:farmaniac/data/auths.dart';
 import 'package:farmaniac/data/products.dart';
 import 'package:farmaniac/screens/create.dart';
 import 'package:flutter/material.dart';

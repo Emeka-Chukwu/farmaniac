@@ -1,10 +1,17 @@
+import 'dart:io';
+
+import 'package:farmaniac/components/login.dart';
+import 'package:farmaniac/components/progressBar.dart';
 import 'package:farmaniac/configs/change_screen.dart';
+import 'package:farmaniac/configs/color.dart';
 import 'package:farmaniac/models/farmer.dart';
 import 'package:farmaniac/screens/available_product.dart';
 import 'package:farmaniac/screens/bottom_navigation.dart';
 import 'package:farmaniac/screens/login.dart';
 import 'package:farmaniac/services/auths.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Authentication with ChangeNotifier {
   UserServices userServices = UserServices();
@@ -18,6 +25,8 @@ class Authentication with ChangeNotifier {
   String phone;
   Farmer farmer;
   bool checkedLoggedIn = false;
+
+  File file;
 
   void phoneNumber(String number) {
     phone = number;
@@ -56,13 +65,21 @@ class Authentication with ChangeNotifier {
   }
 
   void signIn(BuildContext context) async {
+    loginProgress(context);
     try {
       var user = await userServices.loginUserAccount(email, password);
       farmer = user;
       changeScreen(context, BottomNavigationSheet());
       notifyListeners();
-    } catch (e) {
-      print(e.toString());
+    } catch (err) {
+      Navigator.pop(context);
+      dialogWarning(
+        context,
+        title: "Message",
+        description: "${err.toString()}",
+        color: darkBlue,
+      );
+      print(err.toString());
       notifyListeners();
     }
   }
@@ -81,38 +98,79 @@ class Authentication with ChangeNotifier {
         password: password,
         farmname: farmname,
         phone: phone,
+        isFarmer: true,
         confirmpassword: confirmpassword);
+
+    progressBar(
+      context,
+      title: "Farmer Registration",
+      description: "registering",
+      color: green,
+    );
     if (farmer.password == farmer.confirmpassword &&
         farmer.password.length >= 6) {
       try {
         await userServices.createUserAccount(farmer);
         changeScreen(context, LoginScreen());
-      } catch (e) {
-        print(e.toString());
+      } catch (err) {
+        print(err.toString());
+        Navigator.pop(context);
+        dialogWarning(
+          context,
+          title: "Message",
+          description: "${err.toString()}",
+          color: green,
+        );
       }
+    } else {
+      Navigator.pop(context);
+
+      dialogWarning(
+        context,
+        title: "Message",
+        description: "Password should not be less than 6 and it should match",
+        color: green,
+      );
     }
   }
 
   void buyerSignUp(BuildContext context) async {
     Farmer farmer = Farmer(
-      fname: fname,
-      lname: lname,
-      email: email,
-      password: password,
-      confirmpassword: confirmpassword,
-    );
+        fname: fname,
+        lname: lname,
+        email: email,
+        password: password,
+        confirmpassword: confirmpassword,
+        phone: phone);
     print(fname);
     print(lname);
     print(email);
     print(password);
     print(confirmpassword);
+    print(phone);
+
+    progressBar(
+      context,
+      title: "Buyer Registration",
+      description: "registering",
+      color: darkBlue,
+    );
     if (farmer.password == farmer.confirmpassword &&
         farmer.password.length >= 6) {
       try {
         await userServices.createUserAccount(farmer);
-        changeScreen(context, BottomNavigationSheet());
-      } catch (e) {
-        print(e.toString());
+
+        changeScreen(context, LoginScreen());
+        // farmer = user;
+      } catch (err) {
+        print(err.toString());
+        Navigator.pop(context);
+        dialogWarning(
+          context,
+          title: "Message",
+          description: "${err.toString()}",
+          color: darkBlue,
+        );
       }
     }
   }
@@ -132,14 +190,40 @@ class Authentication with ChangeNotifier {
 
   void logout(BuildContext context) async {
     print("logout");
-    changeScreen(context, LoginScreen());
+    // changeScreen(context, LoginScreen());
 
     try {
       await userServices.logoutUserAccount();
-      // changeScreen(context, LoginScreen());
+      changeScreen(context, LoginScreen());
     } catch (err) {
+      // Navigator.pop(context);
+      dialogWarning(
+        context,
+        title: "Message",
+        description: "${err.toString()}",
+        color: darkBlue,
+      );
       print(err);
       print("err");
     }
+  }
+
+  Future<void> getImageDash() async {
+    final picker = ImagePicker();
+    var image = await picker.getImage(source: ImageSource.gallery);
+    File compressedFile = await FlutterNativeImage.compressImage(image.path,
+        quality: 95, targetHeight: 450, targetWidth: 450);
+    file = compressedFile;
+    notifyListeners();
+    try {
+      await (await userServices.submitDashBoardImage(file));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void clearImage() async {
+    file = null;
+    notifyListeners();
   }
 }

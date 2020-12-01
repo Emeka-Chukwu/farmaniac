@@ -12,12 +12,11 @@ class ProductAdded extends StatefulWidget {
 class _ProductAddedState extends State<ProductAdded> {
   @override
   void intiState() {
-    redirectTo();
     super.initState();
   }
 
   Future<void> redirectTo() async {
-    Future.delayed(Duration(seconds: 5), () async {
+    Future.delayed(Duration(seconds: 3), () async {
       // if (auths.persistLoggin(context)) {
       //   changeScreen(context, BottomNavigationSheet());
       // } else {
@@ -32,6 +31,8 @@ class _ProductAddedState extends State<ProductAdded> {
 
   @override
   Widget build(BuildContext context) {
+    redirectTo();
+
     return Scaffold(
       backgroundColor: green,
       body: SafeArea(

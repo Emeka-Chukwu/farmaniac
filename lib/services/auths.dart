@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmaniac/models/farmer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 // import 'package:foodApp/utils/utils.dart';
 
@@ -9,6 +11,9 @@ class UserServices {
   // final StorageReference storageReference =
   //     FirebaseStorage.instance.ref().child("users");
   FirebaseFirestore firestorestance = FirebaseFirestore.instance;
+  final FirebaseAuth userAuth = FirebaseAuth.instance;
+  final StorageReference storageReference =
+      FirebaseStorage.instance.ref().child("users");
 
   User user;
 
@@ -94,5 +99,33 @@ class UserServices {
   Future logoutUserAccount() async {
     FirebaseAuth user = FirebaseAuth.instance;
     user.signOut();
+  }
+
+  Future submitDashBoardImage(File file) async {
+    var timeKey = DateTime.now();
+    Farmer farmer = Farmer();
+
+    final StorageUploadTask uploadTask =
+        storageReference.child(timeKey.toString() + ".jpg").putFile(file);
+    var imageUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    String userId = userAuth.currentUser.uid.toString();
+    print(userId);
+    var data = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .get()
+        .then((value) => value);
+
+    farmer = Farmer.fromJson(data);
+
+    farmer.imageUrl = imageUrl.toString();
+    print(farmer);
+    print(farmer);
+    firestorestance
+        .collection("users")
+        .doc(userId)
+        .set(farmer.toJson())
+        .then((value) => print("nooo"));
   }
 }

@@ -9,6 +9,8 @@ class Farmer {
   String farmname;
   String password;
   String confirmpassword;
+  bool isFarmer;
+  String imageUrl;
 
   Farmer({
     this.id,
@@ -19,6 +21,8 @@ class Farmer {
     this.password,
     this.confirmpassword,
     this.phone,
+    this.imageUrl,
+    this.isFarmer = false,
   });
 
   Farmer.fromJson(DocumentSnapshot snapshot) {
@@ -30,6 +34,9 @@ class Farmer {
     password = snapshot.data()["password"] ?? null;
     phone = snapshot.data()["phone"] ?? null;
     confirmpassword = snapshot.data()["confirmpassword"] ?? null;
+    isFarmer = snapshot.data()["isFarmer"] ?? null;
+    imageUrl = snapshot.data()["imageUrl"] ??
+        "https://media.istockphoto.com/photos/businessman-silhouette-as-avatar-or-default-profile-picture-picture-id476085198";
   }
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +45,8 @@ class Farmer {
         "email": this.email,
         "phone": this.phone,
         "farmname": this.farmname,
+        "isFarmer": this.isFarmer,
+        "imageUrl": this.imageUrl,
       };
 }
 
@@ -82,16 +91,19 @@ class Product {
   String pickup;
   String farmer;
   String phone;
+  DateTime dateTime;
 
-  Product(
-      {this.id,
-      this.name,
-      this.amount,
-      this.description,
-      this.imageUrl,
-      this.farmer,
-      this.phone,
-      this.pickup});
+  Product({
+    this.id,
+    this.name,
+    this.amount,
+    this.description,
+    this.imageUrl,
+    this.farmer,
+    this.phone,
+    this.pickup,
+    this.dateTime,
+  });
 
   Product.fromJson(DocumentSnapshot snapshot) {
     farmer = snapshot.data()["farmer"] ?? null;
@@ -102,6 +114,8 @@ class Product {
     description = snapshot.data()["description"] ?? null;
     pickup = snapshot.data()["pickup"] ?? null;
     imageUrl = snapshot.data()["imageUrl"] ?? null;
+    dateTime = snapshot.data()["dateTime"].toDate() ?? null;
+    // dateTime = snapshot.data()["dateTime"].toDate() ?? null;
   }
 
   Map<String, dynamic> toJson() => {
@@ -112,5 +126,6 @@ class Product {
         "pickup": this.pickup,
         "imageUrl": this.imageUrl,
         "phone": this.phone,
+        "dateTime": this.dateTime,
       };
 }

@@ -30,6 +30,7 @@ class ProductsServices {
 
       product.farmer = value.data()["farmname"];
       product.phone = value.data()["phone"];
+      product.dateTime = DateTime.now();
     });
     firestorestance
         .collection("products")
